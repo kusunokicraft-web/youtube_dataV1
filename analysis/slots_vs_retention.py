@@ -9,12 +9,17 @@ computed.
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 PV = ROOT / "analysis" / "report" / "ad_slots_per_video.csv"
@@ -96,19 +101,19 @@ def scatter_with_fit(ax, x, y, label_x, label_y, color="#1f77b4", colors=None):
 colors = df["inserted_by"].map({"manual": "#1f77b4", "auto": "#ff7f0e"}).tolist()
 
 scatter_with_fit(axes[0, 0], df["effective_slots"], df["avg_view_pct"],
-                 "Slot count", "avg_view_pct (%)", colors=colors)
+                 "スロット数", "平均視聴維持率（%）", colors=colors)
 
 scatter_with_fit(axes[0, 1], df["slots_per_min"], df["avg_view_pct_resid"],
-                 "Slots / min", "avg_view_pct residual (length-controlled)",
+                 "スロット密度（本/分）", "視聴維持率の残差（動画長補正後）",
                  colors=colors)
 axes[0, 1].axhline(0, color="black", linewidth=0.6)
 
 scatter_with_fit(axes[1, 0], df["pre_gap_min"], df["avg_view_pct"],
-                 "Pre-roll-to-first-slot gap (min)", "avg_view_pct (%)",
+                 "プリロールから1本目までの間隔（分）", "平均視聴維持率（%）",
                  colors=colors)
 
 scatter_with_fit(axes[1, 1], df["slots_in_golden_zone"], df["avg_view_pct_resid"],
-                 "Slots in golden zone", "avg_view_pct residual",
+                 "ゴールデンゾーン内のスロット数", "視聴維持率の残差",
                  colors=colors)
 axes[1, 1].axhline(0, color="black", linewidth=0.6)
 
@@ -126,13 +131,13 @@ for ax, x_col, y_col in [(axes[0, 0], "effective_slots", "avg_view_pct"),
 from matplotlib.lines import Line2D
 legend_elements = [
     Line2D([0], [0], marker="o", color="w", markerfacecolor="#1f77b4",
-           markersize=9, label="manual", markeredgecolor="black"),
+           markersize=9, label="手動配置", markeredgecolor="black"),
     Line2D([0], [0], marker="o", color="w", markerfacecolor="#ff7f0e",
-           markersize=9, label="auto", markeredgecolor="black"),
+           markersize=9, label="自動配置", markeredgecolor="black"),
 ]
 axes[0, 0].legend(handles=legend_elements, loc="upper right", fontsize=8)
 
-plt.suptitle("Ad-slot placement vs viewer retention  (n=19)", fontsize=12, y=1.00)
+plt.suptitle("広告スロット配置 vs 視聴維持率  (n=19)", fontsize=12, y=1.00)
 plt.tight_layout()
 out_png = OUT_DIR / "slots_vs_retention.png"
 plt.savefig(out_png, dpi=140)

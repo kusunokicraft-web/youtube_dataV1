@@ -12,12 +12,17 @@ so length-controlled residual scatters are also produced.
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 PV = ROOT / "analysis" / "report" / "ad_slots_per_video.csv"
@@ -62,10 +67,10 @@ def plot_panel(ax, x, y, xlabel, ylabel, df_ref):
     if coef is not None:
         xs = np.linspace(x.min() - 0.5, x.max() + 0.5, 100)
         ax.plot(xs, np.polyval(coef, xs), "-", color="#d62728", linewidth=2,
-                label=f"quadratic R^2={r2:.2f}")
+                label=f"二次フィット R²={r2:.2f}")
         if coef[0] < 0 and x.min() <= vertex <= x.max():
             ax.axvline(vertex, color="#d62728", linestyle=":", alpha=0.5)
-            ax.annotate(f"peak x={vertex:.2f}",
+            ax.annotate(f"ピーク x={vertex:.2f}",
                         xy=(vertex, np.polyval(coef, vertex)),
                         xytext=(8, -10), textcoords="offset points",
                         color="#d62728", fontsize=9)
@@ -81,28 +86,28 @@ def plot_panel(ax, x, y, xlabel, ylabel, df_ref):
 # Panel 1: slot count vs total watch hours
 plot_panel(axes[0, 0],
            df["effective_slots"], df["watch_hours"],
-           "Effective slot count", "Total watch hours", df)
+           "有効スロット数", "総再生時間（時間）", df)
 
 # Panel 2: slot count vs avg_watch_min (per-viewer)
 plot_panel(axes[0, 1],
            df["effective_slots"], df["avg_watch_min"],
-           "Effective slot count", "Avg watch (minutes per viewer)", df)
+           "有効スロット数", "平均視聴時間（分/視聴者）", df)
 
 # Panel 3: slots/min vs avg_watch_min
 plot_panel(axes[1, 0],
            df["slots_per_min"], df["avg_watch_min"],
-           "Slots / min (density)", "Avg watch (minutes per viewer)", df)
+           "スロット密度（本/分）", "平均視聴時間（分/視聴者）", df)
 
 # Panel 4: length-controlled (residualize avg_watch_min on length)
 slope, intercept = np.polyfit(df["length_min"], df["avg_watch_min"], 1)
 df["avg_watch_resid"] = df["avg_watch_min"] - (slope * df["length_min"] + intercept)
 plot_panel(axes[1, 1],
            df["effective_slots"], df["avg_watch_resid"],
-           "Effective slot count",
-           "Avg watch residual (length-controlled, min)", df)
+           "有効スロット数",
+           "平均視聴時間 残差（動画長補正後・分）", df)
 axes[1, 1].axhline(0, color="black", linewidth=0.6)
 
-plt.suptitle("Slot count vs watch-time metrics  (n=19)", fontsize=12, y=1.0)
+plt.suptitle("広告スロット数 vs 視聴時間指標  (n=19)", fontsize=12, y=1.0)
 plt.tight_layout()
 out_png = OUT_DIR / "slots_vs_watchtime.png"
 plt.savefig(out_png, dpi=140)

@@ -14,12 +14,17 @@ Approach:
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 ANALYTICS = ROOT / "analysis" / "report" / "cleaned.csv"
@@ -98,12 +103,12 @@ for metric in ["views_per_day", "watch_hours_per_day", "impressions_per_day",
 # ---- Plot -----------------------------------------------------------
 fig, axes = plt.subplots(2, 3, figsize=(16, 10))
 metrics_to_plot = [
-    ("views_per_day", "Views per day", True),
-    ("watch_hours_per_day", "Watch hours per day", True),
-    ("impressions_per_day", "Impressions per day", True),
-    ("rev_per_day", "Revenue per day (JPY)", True),
-    ("avg_view_pct", "Avg view %", False),
-    ("rpm_jpy", "RPM (JPY)", False),
+    ("views_per_day", "視聴回数/日", True),
+    ("watch_hours_per_day", "再生時間/日（時間）", True),
+    ("impressions_per_day", "インプレッション/日", True),
+    ("rev_per_day", "収益/日（円）", True),
+    ("avg_view_pct", "平均視聴維持率（%）", False),
+    ("rpm_jpy", "RPM（円）", False),
 ]
 
 
@@ -117,18 +122,18 @@ def plot_with_fit(ax, x, y, label, log_y, knee_bp=None):
         coef = np.polyfit(x, np.log(y), 1)
         xs = np.linspace(x.min(), x.max(), 100)
         ax.plot(xs, np.exp(coef[1] + coef[0]*xs), "--", color="#7f7f7f",
-                linewidth=1, label=f"log-linear")
+                linewidth=1, label=f"対数線形フィット")
     elif not log_y:
         coef = np.polyfit(x, y, 1)
         xs = np.linspace(x.min(), x.max(), 100)
         ax.plot(xs, coef[0]*xs + coef[1], "--", color="#7f7f7f",
-                linewidth=1, label="linear")
+                linewidth=1, label="線形フィット")
     if knee_bp is not None:
         ax.axvline(knee_bp, color="#d62728", linestyle=":", linewidth=1.5,
-                   label=f"knee {knee_bp:.0f}min")
+                   label=f"屈曲点 {knee_bp:.0f}分")
     rho = pd.DataFrame({"a": list(x), "b": list(y)}).corr(method="spearman").iloc[0, 1]
     ax.set_title(f"{label}  ρ={rho:+.2f}")
-    ax.set_xlabel("Video length (minutes)")
+    ax.set_xlabel("動画の長さ（分）")
     ax.set_ylabel(label)
     ax.legend(fontsize=8)
     ax.grid(True, alpha=0.3)
@@ -148,7 +153,7 @@ for ax, (col, label, logy) in zip(axes.flatten(), metrics_to_plot):
     plot_with_fit(ax, sub["length_min"].values, sub[col].values, label, logy,
                   knees.get(col))
 
-plt.suptitle(f"Video length vs performance signals  (n={len(long_df)} long-form videos)",
+plt.suptitle(f"動画長 vs パフォーマンス指標  (n={len(long_df)} 本のロングフォーム動画)",
              fontsize=12, y=1.0)
 plt.tight_layout()
 out_png = OUT_DIR / "optimal_length_signals.png"

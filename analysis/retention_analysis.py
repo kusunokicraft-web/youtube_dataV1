@@ -14,12 +14,17 @@ Outputs:
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 RETENTION_DIR = ROOT / "data" / "retention"
@@ -218,7 +223,7 @@ fig, ax = plt.subplots(figsize=(12, 6))
 synth_pcts = np.linspace(0, 1, 100)
 synth_vals = [synth(p) * 100 for p in synth_pcts]
 ax.plot(synth_pcts * 100, synth_vals, "--", color="black", linewidth=2,
-        alpha=0.7, label="Synthetic model")
+        alpha=0.7, label="合成モデル（仮定）")
 
 palette = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 for color, (vid, curve) in zip(palette, curves.items()):
@@ -237,10 +242,10 @@ for color, (vid, curve) in zip(palette, curves.items()):
                    color=color, marker=marker, s=70,
                    edgecolor="black", linewidth=0.5, zorder=5)
 
-ax.set_xlabel("Position (% of video length)")
-ax.set_ylabel("Retention (%)")
-ax.set_title("Retention curves: synthetic model vs real "
-             "(o = current slot, X = current slot with warning)")
+ax.set_xlabel("動画内の位置（%）")
+ax.set_ylabel("視聴維持率（%）")
+ax.set_title("視聴維持率カーブ: 合成モデル vs 実データ "
+             "(○ = 現状スロット, X = 警告付きスロット)")
 ax.legend(loc="upper right", fontsize=8)
 ax.grid(True, alpha=0.3)
 ax.set_xlim(0, 100)

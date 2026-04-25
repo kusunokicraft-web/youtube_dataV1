@@ -5,12 +5,17 @@ Saves PNG to analysis/report/slots_vs_rpm.png.
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 PV = ROOT / "analysis" / "report" / "ad_slots_per_video.csv"
@@ -62,13 +67,13 @@ for _, row in df.iterrows():
                 fontsize=7, color="#444")
 
 ax.plot(xs, ys, "-", color="#d62728", linewidth=2,
-        label=f"Quadratic fit  R^2={r2_quad:.2f}")
+        label=f"二次フィット  R²={r2_quad:.2f}")
 ax.plot(xs, ys_lin, "--", color="#7f7f7f", linewidth=1.2,
-        label=f"Linear fit  R^2={r2_lin:.2f}")
+        label=f"線形フィット  R²={r2_lin:.2f}")
 
 if vertex_x is not None and a < 0 and x.min() <= vertex_x <= x.max():
     ax.axvline(vertex_x, color="#d62728", linestyle=":", alpha=0.5)
-    ax.annotate(f"Quadratic peak\nslots={vertex_x:.1f}, RPM={vertex_y:.0f}",
+    ax.annotate(f"二次関数のピーク\nslots={vertex_x:.1f}, RPM={vertex_y:.0f}",
                 xy=(vertex_x, vertex_y), xytext=(vertex_x + 0.5, vertex_y + 50),
                 fontsize=9, color="#d62728")
 
@@ -82,11 +87,11 @@ legend_elements = [
 ]
 fit_legend = ax.legend(loc="upper right", fontsize=9)
 ax.add_artist(fit_legend)
-ax.legend(handles=legend_elements, loc="lower left", fontsize=9, title="inserted_by")
+ax.legend(handles=legend_elements, loc="lower left", fontsize=9, title="挿入方式")
 
-ax.set_xlabel("Effective ad slots per video")
-ax.set_ylabel("RPM (JPY)")
-ax.set_title(f"Ad slot count vs RPM   (n={len(df)},  "
+ax.set_xlabel("動画あたりの有効広告スロット数")
+ax.set_ylabel("RPM（円）")
+ax.set_title(f"広告スロット数 vs RPM   (n={len(df)},  "
              f"Spearman={spearman:.2f}, Pearson={pearson:.2f})")
 ax.grid(True, alpha=0.3)
 

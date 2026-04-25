@@ -14,12 +14,17 @@ Aggregates:
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 BREAKS = ROOT / "data" / "ad_slots" / "breaks.csv"
@@ -136,12 +141,12 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Hist of inter-slot gaps
 axes[0].hist(inter_all / 60, bins=20, color="#1f77b4", edgecolor="black", alpha=0.8)
-axes[0].axvline(5, color="#2ca02c", linestyle="--", label="recommended 5min")
+axes[0].axvline(5, color="#2ca02c", linestyle="--", label="推奨 5分")
 axes[0].axvline(inter_all.median() / 60, color="#d62728", linestyle="-",
-                label=f"median {inter_all.median()/60:.1f}min")
-axes[0].set_xlabel("Inter-slot gap (minutes)")
-axes[0].set_ylabel("Count")
-axes[0].set_title(f"Distribution of inter-slot gaps  (n={len(inter_all)})")
+                label=f"中央値 {inter_all.median()/60:.1f}分")
+axes[0].set_xlabel("スロット間隔（分）")
+axes[0].set_ylabel("本数")
+axes[0].set_title(f"スロット間ギャップの分布  (n={len(inter_all)})")
 axes[0].legend()
 axes[0].grid(True, alpha=0.3)
 
@@ -159,8 +164,8 @@ for i, (_, row) in enumerate(pv_sorted.iterrows()):
 
 ax2.set_yticks(range(len(pv_sorted)))
 ax2.set_yticklabels(pv_sorted["video_id"], fontsize=8)
-ax2.set_xlabel("Time (minutes)")
-ax2.set_title("Slot positions per video  (red | = avg watch time)")
+ax2.set_xlabel("経過時間（分）")
+ax2.set_title("動画ごとのスロット配置  (赤線 = 平均視聴時間)")
 ax2.grid(True, alpha=0.3, axis="x")
 
 plt.tight_layout()

@@ -22,12 +22,17 @@ the algorithm's preference for clean tail viewing.
 """
 
 from pathlib import Path
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
 
 ROOT = Path(__file__).resolve().parent.parent
 ANALYTICS = ROOT / "analysis" / "report" / "cleaned.csv"
@@ -137,11 +142,11 @@ def find_optimum(length_min: float, avg_watch_min: float,
 
 # ----- Pattern recommendations ---------------------------------------
 PATTERNS = [
-    ("A. Short clip",       11, 5.5),
-    ("B. Mid collab",       22, 9),
-    ("C. Mid compilation",  32, 13),
-    ("D. Long compilation", 47, 16),
-    ("E. Theatrical",       67, 19),
+    ("A. 短編切り抜き",   11, 5.5),
+    ("B. 中編コラボ",     22, 9),
+    ("C. 中尺総集編",     32, 13),
+    ("D. 長編総集編",     47, 16),
+    ("E. 超長編劇場版",   67, 19),
 ]
 
 print("=" * 90)
@@ -187,8 +192,8 @@ pd.DataFrame(rows).to_csv(OUT_DIR / "optimal_patterns_dual.csv", index=False)
 fig, axes = plt.subplots(len(PATTERNS), 1, figsize=(12, 1.6 * len(PATTERNS)))
 for ax, (name, L, A), row in zip(axes, PATTERNS, rows):
     # Backdrop
-    ax.axvspan(0, A, color="#e8f5e8", alpha=0.6, label="avg watch zone")
-    ax.axvspan(A, L, color="#fff5e8", alpha=0.6, label="tail zone")
+    ax.axvspan(0, A, color="#e8f5e8", alpha=0.6, label="平均視聴ゾーン")
+    ax.axvspan(A, L, color="#fff5e8", alpha=0.6, label="テール（離脱後）ゾーン")
     ax.axvline(A, color="#888", linestyle=":", linewidth=1)
 
     rev_pos = [float(p) for p in row["rev_positions"].split(",") if p]
@@ -204,17 +209,17 @@ for ax, (name, L, A), row in zip(axes, PATTERNS, rows):
                edgecolor="black", linewidth=0.6, zorder=3)
 
     ax.set_yticks([0, 1])
-    ax.set_yticklabels(["Algo-safe", "Revenue-max"])
+    ax.set_yticklabels(["アルゴリズム配慮", "収益最大化"])
     ax.set_xlim(-0.5, L + 0.5)
     ax.set_ylim(-0.5, 1.5)
-    ax.set_title(f"{name.split('. ')[1] if '. ' in name else name}  "
-                 f"(length {L}min, avg watch {A}min)  "
-                 f"rev-max JPY{row['rev_jpy_per_session']:.2f} -> "
-                 f"safe JPY{row['safe_jpy_per_session']:.2f}  "
+    ax.set_title(f"{name}  "
+                 f"（動画長 {L}分・平均視聴 {A}分）  "
+                 f"収益最大 ¥{row['rev_jpy_per_session']:.2f} → "
+                 f"アルゴ配慮 ¥{row['safe_jpy_per_session']:.2f}  "
                  f"({row['short_term_delta_pct']:+.0f}%)",
                  fontsize=10)
     ax.grid(True, alpha=0.3, axis="x")
-    ax.set_xlabel("Time (min)")
+    ax.set_xlabel("経過時間（分）")
 
 plt.tight_layout()
 out_png = OUT_DIR / "optimal_dual_timeline.png"
