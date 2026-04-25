@@ -36,10 +36,7 @@ an["impressions_per_day"] = an["impressions"] / an["age_days"]
 
 
 # ---- Apply exclusions ----------------------------------------------
-EXCLUDED = {
-    "7FyovEYud1A": "再アップ失敗（subs=-1, 925 views, 重複タイトル）",
-    "cbEDMw-fPWc": "公開後に非公開化と推定（5 views / 337 日, 重複タイトル）",
-}
+from _exclusions import EXCLUDED_VIDEO_IDS as EXCLUDED
 
 df = an[(an["format"] == "Long") & (an["views"] > 0)].copy()
 df = df[~df["video_id"].isin(EXCLUDED.keys())]

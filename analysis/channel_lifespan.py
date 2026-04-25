@@ -34,7 +34,7 @@ asof = pd.Timestamp("2026-04-25")
 an["age_days"] = (asof - an["published_at"]).dt.days.clip(lower=1)
 an["length_min"] = an["length_sec"] / 60
 
-EXC = {"7FyovEYud1A", "cbEDMw-fPWc"}
+from _exclusions import EXCLUDED_VIDEO_IDS as EXC
 df = an[(an["format"] == "Long") & (an["views"] > 0)].copy()
 df = df[~df["video_id"].isin(EXC)].dropna(subset=["est_revenue_jpy"])
 

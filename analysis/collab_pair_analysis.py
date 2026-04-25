@@ -81,7 +81,7 @@ c = np.exp(a_)
 an["expected_views"] = c * (an["age_days"] ** k)
 an["performance_index"] = an["views"] / an["expected_views"]
 
-EXC = {"7FyovEYud1A", "cbEDMw-fPWc"}
+from _exclusions import EXCLUDED_VIDEO_IDS as EXC
 df = an[(an["format"] == "Long") & (an["views"] > 0)].copy()
 df = df[~df["video_id"].isin(EXC)]
 

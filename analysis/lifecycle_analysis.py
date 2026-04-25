@@ -32,7 +32,7 @@ an["age_days"] = (asof - an["published_at"]).dt.days.clip(lower=1)
 an["length_min"] = an["length_sec"] / 60
 an["views_per_day"] = an["views"] / an["age_days"]
 
-EXC = {"7FyovEYud1A", "cbEDMw-fPWc"}
+from _exclusions import EXCLUDED_VIDEO_IDS as EXC
 df = an[(an["format"] == "Long") & (an["views"] > 0)].copy()
 df = df[~df["video_id"].isin(EXC)]
 
