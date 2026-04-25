@@ -1,0 +1,23 @@
+video_id,position_sec,position_pct,retention_pct,source,note
+8zzMPgZ6bC8,0,0.00,100.0,visual_estimate,
+8zzMPgZ6bC8,5,0.18,85.0,visual_estimate,first-second cliff
+8zzMPgZ6bC8,15,0.53,72.0,visual_estimate,
+8zzMPgZ6bC8,30,1.05,66.0,studio_annotation,typical for category
+8zzMPgZ6bC8,60,2.11,55.0,visual_estimate,
+8zzMPgZ6bC8,120,4.21,48.0,visual_estimate,
+8zzMPgZ6bC8,180,6.32,46.0,visual_estimate,
+8zzMPgZ6bC8,300,10.53,43.0,visual_estimate,curve flattens
+8zzMPgZ6bC8,480,16.85,42.0,visual_estimate,
+8zzMPgZ6bC8,600,21.06,40.0,visual_estimate,
+8zzMPgZ6bC8,900,31.59,37.0,visual_estimate,
+8zzMPgZ6bC8,1200,42.12,33.0,visual_estimate,
+8zzMPgZ6bC8,1425,50.02,30.0,visual_estimate,midpoint near 23:45
+8zzMPgZ6bC8,1500,52.65,30.0,visual_estimate,
+8zzMPgZ6bC8,1800,63.18,28.0,visual_estimate,
+8zzMPgZ6bC8,1950,68.45,28.0,visual_estimate,before re-engagement spike
+8zzMPgZ6bC8,2010,70.55,42.0,visual_estimate,RE-ENGAGEMENT SPIKE (~33:30)
+8zzMPgZ6bC8,2070,72.66,28.0,visual_estimate,after spike
+8zzMPgZ6bC8,2200,77.22,26.0,visual_estimate,
+8zzMPgZ6bC8,2400,84.24,24.0,visual_estimate,
+8zzMPgZ6bC8,2700,94.77,21.0,visual_estimate,
+8zzMPgZ6bC8,2849,100.00,21.0,visual_estimate,end
