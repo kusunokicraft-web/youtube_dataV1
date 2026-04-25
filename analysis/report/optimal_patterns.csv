@@ -1,0 +1,6 @@
+pattern,length_range,avg_watch_min,optimal_mid_slots,effective_mid_slots,total_slots_incl_preroll,gap_min,first_min,density_per_min,projected_ads_per_session,projected_jpy_per_session,mid_positions_min
+A. 短編切り抜き,10-12分,5.5,1,1,2,3.5,2.0,0.182,1.43,0.7,2.0
+B. 中編コラボ,20-25分,9.0,2,2,3,3.5,2.0,0.133,2.25,1.0,"2.0,5.5"
+C. 中尺総集編,30-35分,13.0,4,4,5,3.5,2.0,0.154,3.25,1.3,"2.0,5.5,9.0,12.5"
+D. 長編総集編,45-50分,16.0,6,6,7,3.5,2.0,0.147,4.43,1.5,"2.0,5.5,9.0,12.5,16.0,19.5"
+E. 超長編劇場版,65-70分,19.0,7,7,8,3.5,2.0,0.119,5.3,1.6,"2.0,5.5,9.0,12.5,16.0,19.5,23.0"
