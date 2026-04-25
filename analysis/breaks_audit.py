@@ -18,7 +18,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 ANALYTICS = ROOT / "analysis" / "report" / "cleaned.csv"
-BREAKS = ROOT / "data" / "midroll_breaks.csv"
+BREAKS = ROOT / "data" / "ad_slots" / "breaks.csv"
 
 # Approximate retention curve for compilation/long-form vtuber content.
 # Calibrated so that area-under-curve through avg_watch_time matches data.
@@ -139,13 +139,14 @@ for vid in breaks["video_id"].unique():
           f"広告表示={int(a['ad_impressions']):,}  est_revenue=¥{a['est_revenue_jpy']:,.0f}")
 
     print(f"\n【現状の広告ブレイク (raw {len(r['breaks'])}本 / 有効 {len(r['effective'])}本)】")
-    print("idx  pos       pct   有効  avg内  推定到達率")
+    print("idx  pos       pct    有効   avg内  到達率  警告")
     for _, row in r["breaks"].iterrows():
         flag_eff = "○" if row["effective"] else "×重複"
         flag_aw = "○" if row["before_avg_watch"] else "×超過"
+        warn = "⚠" if str(row.get("has_warning", "")).upper() == "TRUE" else ""
         print(f"  {int(row['break_index'])}  {row['position_hms']}  "
-              f"{row['pos_pct']*100:5.1f}%  {flag_eff}    {flag_aw}    "
-              f"{row['estimated_reach']*100:.1f}%")
+              f"{row['pos_pct']*100:5.1f}%  {flag_eff}   {flag_aw}    "
+              f"{row['estimated_reach']*100:5.1f}%  {warn}")
 
     print(f"\n  実測広告/セッション : {r['actual_ads_per_session']:.2f}")
     print(f"  モデル推定          : {r['estimated_ads_per_session']:.2f}")
