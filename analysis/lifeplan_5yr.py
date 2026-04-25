@@ -1,11 +1,19 @@
 """
-Life-plan revenue projection: 5 active years + 5 harvest years.
+Life-plan revenue projection: 5 active years + 5 harvest years
+with optional graduation-induced accelerated decay.
 
-Realistic constraint: VTuber subject (Ange) likely to graduate, genre
-trends shift. Active production caps at ~5 years.
+Realistic constraints:
+  1. VTuber subject (Ange) likely to graduate within ~5 years
+  2. Post-graduation, decay accelerates: new viewer inflow dries up,
+     algorithmic recommendation weakens, genre nostalgia fades
+  3. Model: multiply natural-decay revenue by g(t) where
+     g(t) = 1 for t <= T_grad, exp(-λ_post * (t - T_grad)) afterwards
 
-Years 1-5: post monthly (60 new videos)
-Years 6-10: harvest mode (decay of 26 existing + 60 new)
+Scenarios for λ_post (post-grad additional decay rate):
+  0.0  : no graduation effect (current channel continues forever)
+  0.2  : mild — still strong nostalgia (year 10 = 37% of natural)
+  0.3  : standard — gradual fade (year 10 = 22% of natural)
+  0.5  : severe — talent forgotten quickly (year 10 = 8% of natural)
 """
 
 import sys, numpy as np, pandas as pd
@@ -32,112 +40,117 @@ mature30["rev_year_10"] = mature30["scale_c"]*((10*365)**k)
 geo_mean = np.exp(np.log(mature30["rev_year_10"]).mean())
 print(f"Per-video 10y lifetime (V2 なし): ¥{geo_mean:,.0f}")
 
-# c_new: revenue scale per new video
 c_new = geo_mean / ((10*365)**k)
+T_GRAD = 5  # graduation year
+
+
+def grad_factor(year_idx: int, lam_post: float) -> float:
+    """ Year-mid graduation discount factor. Applied to year `year_idx`. """
+    if year_idx <= T_GRAD:
+        return 1.0
+    # Use year mid-point for the year's discount
+    return float(np.exp(-lam_post * (year_idx - 0.5 - T_GRAD)))
 
 
 def existing_tail_revenue(start_day: int, end_day: int) -> float:
-    """ Revenue from existing 26 videos between calendar days [start, end] (asof=day 0). """
     total = 0
     for _, r in df30_all.iterrows():
         scale_c = r["views"] / (r["age_days"]**k)
         rpv = r["est_revenue_jpy"]/r["views"]
         a0 = r["age_days"] + start_day
         a1 = r["age_days"] + end_day
-        future_views = scale_c * (a1**k - a0**k)
-        total += future_views * rpv
+        total += scale_c * (a1**k - a0**k) * rpv
     return total
 
 
-def new_video_revenue_window(publish_day: float, start_day: float,
-                             end_day: float) -> float:
-    """ Revenue from one new video (published at publish_day) between
-    calendar days [start_day, end_day]. Uses cumulative integral of c*age^k. """
-    if end_day <= publish_day:
-        return 0
-    a0 = max(0, start_day - publish_day)
-    a1 = end_day - publish_day
-    if a0 == 0:
-        a0 = 1  # avoid 0^k issues at publish day
-    return c_new * (a1**k - a0**k)
-
-
-def yearly_revenue(year_idx: int, n_active_years: int = 5,
-                   n_per_year: int = 12) -> dict:
-    """ Revenue earned during year `year_idx` (1-indexed). """
+def yearly_revenue(year_idx: int, n_active_years: int, n_per_year: int,
+                   lam_post: float) -> dict:
     start = (year_idx - 1) * 365
     end = year_idx * 365
     tail = existing_tail_revenue(start, end)
     interval = 365 / n_per_year
     new_total = 0
-    # Iterate publications across active years only
     max_publish_day = n_active_years * 365
     tau = 0
     while tau < max_publish_day:
-        new_total += new_video_revenue_window(tau, start, end)
+        a0 = max(1, start - tau)
+        a1 = end - tau
+        if a1 > a0:
+            new_total += c_new * (a1**k - a0**k)
         tau += interval
-    return {"year": year_idx, "tail": tail, "new": new_total,
-            "total": tail + new_total}
+    g = grad_factor(year_idx, lam_post)
+    return {"year": year_idx, "tail": tail*g, "new": new_total*g,
+            "total": (tail+new_total)*g, "g": g}
 
 
-print("\n=== 5 年制作 + 5 年 harvest シナリオ ===")
-print(f"{'年次':<8}{'既存tail':>12}{'新作':>12}{'年商計':>12}{'累計':>14}")
-print("-" * 60)
-cumulative = 0
-yearly = []
-for y in range(1, 11):
-    r = yearly_revenue(y, n_active_years=5, n_per_year=12)
-    cumulative += r["total"]
-    yearly.append({**r, "cumulative": cumulative})
-    marker = "  ← 制作終了" if y == 5 else ""
-    print(f"{y}年目   ¥{r['tail']:>9,.0f}  ¥{r['new']:>9,.0f}  "
-          f"¥{r['total']:>9,.0f}  ¥{cumulative:>11,.0f}{marker}")
-
-active_total = sum(yr["total"] for yr in yearly[:5])
-harvest_total = sum(yr["total"] for yr in yearly[5:])
-print(f"\n5 年累計（制作期）: ¥{active_total:,.0f} ({active_total/10000:.0f}万)")
-print(f"6-10 年累計（harvest）: ¥{harvest_total:,.0f} ({harvest_total/10000:.0f}万)")
-print(f"10 年累計: ¥{active_total+harvest_total:,.0f} ({(active_total+harvest_total)/10000:.0f}万)")
-
-# Investment portfolio under this trajectory
-def compound(rate: float) -> dict:
-    """ Compound investment year-by-year. Each year's full revenue is invested. """
-    bal_5 = bal_10 = 0
-    for y in range(10):
-        bal_10 = (bal_10 + yearly[y]["total"]) * (1 + rate)
-        if y < 5:
-            bal_5 = (bal_5 + yearly[y]["total"]) * (1 + rate)
-    return {"5y": bal_5, "10y": bal_10}
+def residual_value(n_active_years: int, n_per_year: int, lam_post: float,
+                   horizon_years: int = 20) -> float:
+    """ Catalog earnings from year 11 to horizon, year-by-year with grad discount. """
+    total = 0
+    interval = 365/n_per_year
+    for y in range(11, horizon_years + 1):
+        start = (y - 1) * 365
+        end = y * 365
+        tail = existing_tail_revenue(start, end)
+        new_total = 0
+        tau = 0
+        while tau < n_active_years*365:
+            a0 = max(1, start - tau)
+            a1 = end - tau
+            if a1 > a0:
+                new_total += c_new * (a1**k - a0**k)
+            tau += interval
+        g = float(np.exp(-lam_post * (y - 0.5 - T_GRAD))) if lam_post > 0 else 1.0
+        total += (tail + new_total) * g
+    return total
 
 
-print("\n=== 投資ポートフォリオ（YouTube 全額投資） ===")
-for r in [0.05, 0.07]:
-    c = compound(r)
-    print(f"  年率 {r:.0%}: 5 年 ¥{c['5y']:,.0f} ({c['5y']/10000:.0f}万)  "
-          f"10 年 ¥{c['10y']:,.0f} ({c['10y']/10000:.0f}万)")
+def compound(yearly_revs, rate):
+    bal = 0
+    for v in yearly_revs:
+        bal = (bal + v) * (1 + rate)
+    return bal
 
-# Channel residual value at year 10
-# = future earnings beyond year 10 from the 86-video catalog
-year10_day = 10 * 365
-year20_day = 20 * 365  # cap at year 20
-residual_existing = existing_tail_revenue(year10_day, year20_day)
-residual_new = 0
-tau = 0
-while tau < 5 * 365:
-    a0 = year10_day - tau
-    a1 = year20_day - tau
-    if a1 > a0 > 0:
-        residual_new += c_new * (a1**k - a0**k)
-    tau += 365 / 12
-print(f"\n=== 10 年時点のチャネル残存価値（11-20 年分） ===")
-print(f"  既存 26 動画: ¥{residual_existing:,.0f} ({residual_existing/10000:.0f}万)")
-print(f"  新作 60 動画: ¥{residual_new:,.0f} ({residual_new/10000:.0f}万)")
-print(f"  合計: ¥{residual_existing+residual_new:,.0f} "
-      f"({(residual_existing+residual_new)/10000:.0f}万)")
 
-# Total assets at year 10
-print(f"\n=== 10 年後総資産（YouTube 全額投資 + チャネル残存 + 防衛資金 200 万） ===")
-for r in [0.05, 0.07]:
-    c = compound(r)
-    total = c["10y"] + residual_existing + residual_new + 2_000_000
-    print(f"  年率 {r:.0%}: ¥{total:,.0f} ({total/10000:.0f}万)")
+def run(label: str, n_per: int, lam_post: float):
+    revs = [yearly_revenue(y, T_GRAD, n_per, lam_post)["total"] for y in range(1, 11)]
+    cum5 = sum(revs[:5])
+    cum10 = sum(revs)
+    p5_5 = compound(revs[:5], 0.05) * (1.05**5)  # let years 6-10 also compound
+    # simpler: compound full 10 years where years 6-10 contribute their (decayed) rev
+    p10_5 = compound(revs, 0.05)
+    p10_7 = compound(revs, 0.07)
+    res = residual_value(T_GRAD, n_per, lam_post)
+    t5 = p10_5 + res + 2_000_000
+    t7 = p10_7 + res + 2_000_000
+    return {"label": label, "n_per": n_per, "lam": lam_post,
+            "5y累計": cum5, "10y累計": cum10,
+            "p5%": p10_5, "p7%": p10_7, "残存": res,
+            "総資産5%": t5, "総資産7%": t7,
+            "yearly": revs}
+
+
+print(f"\n{'='*100}")
+print("ペース × 卒業逓減シナリオ — 10 年累計 (万円)")
+print(f"{'='*100}")
+print(f"{'ペース':<10}{'λ_post':<10}{'5y累計':>10}{'10y累計':>10}{'残存':>10}{'総資産5%':>12}{'総資産7%':>12}")
+print("-" * 80)
+all_results = []
+for label, n_per in [("月1本", 12), ("月1.5本", 18), ("月2本", 24)]:
+    for lam in [0.0, 0.2, 0.3, 0.5]:
+        r = run(label, n_per, lam)
+        all_results.append(r)
+        lam_label = f"{lam:.1f}({'なし' if lam==0 else '緩' if lam<0.25 else '標準' if lam<0.4 else '急'})"
+        print(f"{label:<10}{lam_label:<10}"
+              f"¥{r['5y累計']/10000:>7,.0f}万¥{r['10y累計']/10000:>7,.0f}万"
+              f"¥{r['残存']/10000:>7,.0f}万¥{r['総資産5%']/10000:>9,.0f}万"
+              f"¥{r['総資産7%']/10000:>9,.0f}万")
+
+# Detail year-by-year for 月2本 × λ=0.3 (standard scenario)
+print(f"\n=== 推奨シナリオ詳細: 月 2 本 × λ_post=0.3（標準） ===")
+target = next(r for r in all_results if r["label"]=="月2本" and r["lam"]==0.3)
+print(f"{'年次':<8}{'年商':>14}{'卒業係数':>10}")
+for y, v in enumerate(target["yearly"], 1):
+    g = grad_factor(y, 0.3)
+    note = " ←制作終了/卒業想定" if y == 5 else ""
+    print(f"{y}年目  ¥{v:>11,.0f} ({v/10000:>4.0f}万)  ×{g:.2f}{note}")
