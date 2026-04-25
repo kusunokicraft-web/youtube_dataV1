@@ -1,0 +1,18 @@
+{
+  "totals": {
+    "views": 6963517.0,
+    "impressions": 131729814.0,
+    "watch_hours": 1502244.014,
+    "revenue_jpy": 2858079.562,
+    "rpm_jpy": 410.363,
+    "ctr_pct": 3.19,
+    "avg_view_pct": 30.96,
+    "like_ratio_pct": 98.41
+  },
+  "published_count": 27,
+  "draft_count": 31,
+  "pareto_50_videos": 4,
+  "pareto_80_videos": 9,
+  "revenue_pareto_50_videos": 3,
+  "revenue_pareto_80_videos": 8
+}
