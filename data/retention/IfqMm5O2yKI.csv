@@ -1,0 +1,25 @@
+video_id,position_sec,position_pct,retention_pct,source,note
+IfqMm5O2yKI,0,0.00,100.0,visual_estimate,
+IfqMm5O2yKI,5,0.12,80.0,visual_estimate,first-second cliff
+IfqMm5O2yKI,15,0.37,62.0,visual_estimate,
+IfqMm5O2yKI,30,0.73,54.0,studio_annotation,below typical for category
+IfqMm5O2yKI,60,1.47,48.0,visual_estimate,
+IfqMm5O2yKI,120,2.93,42.0,visual_estimate,
+IfqMm5O2yKI,180,4.40,40.0,visual_estimate,
+IfqMm5O2yKI,300,7.33,38.0,visual_estimate,curve flattens
+IfqMm5O2yKI,480,11.72,35.0,visual_estimate,
+IfqMm5O2yKI,600,14.66,33.0,visual_estimate,
+IfqMm5O2yKI,900,21.98,30.0,visual_estimate,
+IfqMm5O2yKI,1200,29.31,28.0,visual_estimate,
+IfqMm5O2yKI,1500,36.64,27.0,visual_estimate,
+IfqMm5O2yKI,1800,43.97,26.0,visual_estimate,
+IfqMm5O2yKI,2047,50.01,32.0,visual_estimate,re-engagement bump near 34:07
+IfqMm5O2yKI,2100,51.30,26.0,visual_estimate,after bump
+IfqMm5O2yKI,2400,58.62,25.0,visual_estimate,
+IfqMm5O2yKI,2700,65.94,30.0,visual_estimate,second bump (~45:00)
+IfqMm5O2yKI,2800,68.39,24.0,visual_estimate,after second bump
+IfqMm5O2yKI,3000,73.28,23.0,visual_estimate,
+IfqMm5O2yKI,3300,80.61,21.0,visual_estimate,
+IfqMm5O2yKI,3600,87.93,20.0,visual_estimate,
+IfqMm5O2yKI,3900,95.26,18.0,visual_estimate,
+IfqMm5O2yKI,4094,100.00,17.0,visual_estimate,end
