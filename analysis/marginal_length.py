@@ -18,6 +18,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _jp_font import setup_japanese_font  # noqa: E402
+setup_japanese_font()
+
 ROOT = Path(__file__).resolve().parent.parent
 ANALYTICS = ROOT / "analysis" / "report" / "cleaned.csv"
 OUT_DIR = ROOT / "analysis" / "report"
@@ -88,20 +93,20 @@ ys_m = np.exp(ys_log)
 ax = axes[0, 0]
 ax.scatter(mature["length_min"], mature["rev_per_day"],
            color="#1f77b4", s=60, alpha=0.7, edgecolor="black",
-           linewidth=0.5, label=f"Mature (n={len(mature)})")
+           linewidth=0.5, label=f"成熟動画 (n={len(mature)})")
 ax.scatter(recent["length_min"], recent["rev_per_day"],
            color="#ff7f0e", s=60, alpha=0.5, edgecolor="black",
-           linewidth=0.5, marker="^", label=f"Recent <180d (n={len(recent)})")
+           linewidth=0.5, marker="^", label=f"新作 <180日 (n={len(recent)}・除外)")
 ax.plot(xs_m, ys_m, "-", color="#d62728", linewidth=2.5,
-        label="LOESS smooth (mature)")
+        label="平滑化曲線 (成熟動画)")
 for _, r in mature.iterrows():
     ax.annotate(r["video_id"], (r["length_min"], r["rev_per_day"]),
                 xytext=(3, 3), textcoords="offset points",
                 fontsize=6, color="#444")
 ax.set_yscale("log")
-ax.set_xlabel("Video length (minutes)")
-ax.set_ylabel("Revenue per day (JPY, log)")
-ax.set_title("Length vs revenue/day (mature videos only)")
+ax.set_xlabel("動画の長さ（分）")
+ax.set_ylabel("収益/日（円・対数軸）")
+ax.set_title("動画長 vs 1日あたり収益（成熟動画のみ）")
 ax.legend(fontsize=8)
 ax.grid(True, alpha=0.3)
 
@@ -109,18 +114,18 @@ ax.grid(True, alpha=0.3)
 ax = axes[0, 1]
 xd, dy = numerical_derivative(xs_m, ys_m)
 ax.plot(xd, dy, "-", color="#2ca02c", linewidth=2.5,
-        label="d(rev/day) / d(length)")
+        label="限界収益（傾き）")
 ax.fill_between(xd, 0, dy, where=(dy > 0), alpha=0.2, color="#2ca02c",
-                label="positive marginal")
+                label="プラス領域（伸ばすほど儲かる）")
 ax.fill_between(xd, 0, dy, where=(dy <= 0), alpha=0.2, color="#d62728",
-                label="negative marginal")
+                label="マイナス領域（伸ばすと損）")
 ax.axhline(0, color="black", linewidth=0.7)
 peak_idx = np.argmax(ys_m)
 ax.axvline(xs_m[peak_idx], color="black", linestyle=":",
-           label=f"peak at {xs_m[peak_idx]:.0f}min")
-ax.set_xlabel("Video length (minutes)")
-ax.set_ylabel("Marginal revenue per minute (JPY/day per +1 min)")
-ax.set_title("Marginal revenue per added minute")
+           label=f"収益ピーク {xs_m[peak_idx]:.0f}分")
+ax.set_xlabel("動画の長さ（分）")
+ax.set_ylabel("1分追加あたりの収益増減（円/日）")
+ax.set_title("1分追加で得られる限界収益")
 ax.legend(fontsize=8)
 ax.grid(True, alpha=0.3)
 
@@ -132,13 +137,13 @@ ys_v = np.exp(ys_v_log)
 ax = axes[1, 0]
 ax.scatter(mature["length_min"], mature["views_per_day"],
            color="#1f77b4", s=60, alpha=0.7, edgecolor="black",
-           linewidth=0.5, label="Mature")
+           linewidth=0.5, label="成熟動画")
 ax.plot(xs_v, ys_v, "-", color="#d62728", linewidth=2.5,
-        label="LOESS smooth")
+        label="平滑化曲線")
 ax.set_yscale("log")
-ax.set_xlabel("Video length (minutes)")
-ax.set_ylabel("Views per day (log)")
-ax.set_title("Length vs views/day (mature videos only)")
+ax.set_xlabel("動画の長さ（分）")
+ax.set_ylabel("視聴回数/日（対数軸）")
+ax.set_title("動画長 vs 1日あたり視聴回数（成熟動画のみ）")
 ax.legend(fontsize=8)
 ax.grid(True, alpha=0.3)
 
@@ -146,21 +151,21 @@ ax.grid(True, alpha=0.3)
 ax = axes[1, 1]
 xd_v, dy_v = numerical_derivative(xs_v, ys_v)
 ax.plot(xd_v, dy_v, "-", color="#2ca02c", linewidth=2.5,
-        label="d(views/day) / d(length)")
+        label="限界視聴増（傾き）")
 ax.fill_between(xd_v, 0, dy_v, where=(dy_v > 0), alpha=0.2, color="#2ca02c")
 ax.fill_between(xd_v, 0, dy_v, where=(dy_v <= 0), alpha=0.2, color="#d62728")
 ax.axhline(0, color="black", linewidth=0.7)
 peak_idx_v = np.argmax(ys_v)
 ax.axvline(xs_v[peak_idx_v], color="black", linestyle=":",
-           label=f"peak at {xs_v[peak_idx_v]:.0f}min")
-ax.set_xlabel("Video length (minutes)")
-ax.set_ylabel("Marginal views per minute (views/day per +1 min)")
-ax.set_title("Marginal views per added minute")
+           label=f"視聴ピーク {xs_v[peak_idx_v]:.0f}分")
+ax.set_xlabel("動画の長さ（分）")
+ax.set_ylabel("1分追加あたりの視聴回数増減（views/日）")
+ax.set_title("1分追加で得られる限界視聴回数")
 ax.legend(fontsize=8)
 ax.grid(True, alpha=0.3)
 
-plt.suptitle(f"Marginal returns to video length  "
-             f"(mature n={len(mature)}, recent excluded)",
+plt.suptitle(f"動画長の限界収益・限界視聴 分析  "
+             f"(成熟動画 n={len(mature)}・新作除外)",
              fontsize=12, y=1.0)
 plt.tight_layout()
 out_png = OUT_DIR / "marginal_length.png"
