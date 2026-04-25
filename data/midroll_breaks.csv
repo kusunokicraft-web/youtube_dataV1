@@ -1,0 +1,7 @@
+video_id,break_index,position_sec,position_hms,frame_or_cs,inserted_by,ad_type,note
+bv2iwq17LVY,1,1335,0:22:15,30,manual,,
+bv2iwq17LVY,2,1335,0:22:15,41,manual,,duplicate_of_break_1 (gap 0.4s; YouTube min gap is 30s)
+bv2iwq17LVY,3,2800,0:46:40,27,manual,,
+bv2iwq17LVY,4,3418,0:56:58,21,manual,,
+bv2iwq17LVY,5,3420,0:57:00,45,manual,,duplicate_of_break_4 (gap 2.2s; YouTube min gap is 30s)
+bv2iwq17LVY,6,3628,1:00:28,24,manual,,
