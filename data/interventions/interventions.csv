@@ -1,0 +1,5 @@
+date,target,type,change,hypothesis,eval_after_days,status,evaluated_date,result,notes
+2026-04-25,channel,strategy_decision,V2 戦略策定（RPM +30% × 視聴 +15% = lifetime 1.49x 目標）,V2 multiplier 1.49x,180,executed,,,analysis/report/INTEGRATED_REPORT_V2.md に統合レポートあり
+2026-04-25,channel,cohort_def,V1（〜2026-04-25 公開）/ V2（2026-04-26 以降公開）の境界線を設定,—,—,executed,,,analysis 全体の母集団分割の基準
+2026-04-25,channel,strategy_decision,投稿頻度を月 1-2 本に固定（ストック型推奨）,卒業逓減リスクへの保険,365,executed,,,§1 Phase 1 で 3 つの運用モデル整理済み
+2026-04-26,channel,strategy_decision,正社員プラン D'（ドットライン）応募,—,—,executed,,,LIFE_PLAN.md §15 参照。試用期間で実証
