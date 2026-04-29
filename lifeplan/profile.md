@@ -103,6 +103,7 @@
 | 2026-（年内） | 結婚 | 千葉県袖ケ浦市へ転居（地域定着の根拠）|
 | 2026-04-26 | ドットライン株式会社 ジョブコーチ職 応募 | 正社員候補 D' |
 | 2026-04-29 | AGC株式会社 千葉工場 設備保全（計装）応募 | 正社員候補・経済性最強。書類選考結果待ち（1週間以内連絡予定）|
+| 2026-04-29 | TDCX Japan株式会社 テクニカルサポート 応募 | 正社員候補・完全在宅。最短3営業日〜1週間で結果連絡予定 |
 
 ## 7. スキル・強み
 
@@ -143,7 +144,7 @@
 |---|---|---|
 | ドットライン ジョブコーチ | applied (2026-04-26) | dotline_jobcoach.md |
 | AGC 千葉工場 設備保全 | **applied (2026-04-29)** | agc_chiba_keiso.md |
-| TDCX Japan カスタマーサポート | researched | tdcx_japan_csr.md |
+| TDCX Japan カスタマーサポート | **applied (2026-04-29)** | tdcx_japan_csr.md / tdcx_japan_csr_application.md |
 | セントラルフィットネス（バイト） | researched | central_sodegaura_staff.md |
 
 ## 10. 関連ドキュメント
