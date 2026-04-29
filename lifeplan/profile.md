@@ -173,6 +173,7 @@
 | セントラルフィットネス（バイト） | researched | central_sodegaura_staff.md |
 | ALSOK-TW 千葉 施設警備 | researched（応募見送り推奨）| alsok_tw_chiba_security.md |
 | 太陽鉱油 千葉 SS 店舗スタッフ | researched（応募保留・順位 5）| taiyo_koyu_chiba_ss.md |
+| AGC エンジニアリング 千葉工場 製造 | researched（応募見送り推奨・順位 6）| agc_engineering_chiba_manufacturing.md |
 
 ## 10. 関連ドキュメント
 
