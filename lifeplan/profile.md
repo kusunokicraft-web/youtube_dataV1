@@ -175,6 +175,7 @@
 | 太陽鉱油 千葉 SS 店舗スタッフ | researched（応募保留・順位 5）| taiyo_koyu_chiba_ss.md |
 | AGC エンジニアリング 千葉工場 製造 | researched（応募見送り推奨・順位 7）| agc_engineering_chiba_manufacturing.md |
 | 東京美装興業 木更津 設備管理 | researched（応募保留・順位 6・§11-5 戦略親和）| tokyobiso_kisarazu_facility.md |
+| カワサキグリーンテック 袖ヶ浦 発電プラント | researched（応募見送り・順位 8・3 交代夜勤）| kawasaki_greentech_sodegaura.md |
 
 ## 10. 関連ドキュメント
 
