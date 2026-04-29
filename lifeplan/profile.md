@@ -172,6 +172,7 @@
 | TDCX Japan カスタマーサポート | **applied (2026-04-29)** | tdcx_japan_csr.md / tdcx_japan_csr_application.md |
 | セントラルフィットネス（バイト） | researched | central_sodegaura_staff.md |
 | ALSOK-TW 千葉 施設警備 | researched（応募見送り推奨）| alsok_tw_chiba_security.md |
+| 太陽鉱油 千葉 SS 店舗スタッフ | researched（応募保留・順位 5）| taiyo_koyu_chiba_ss.md |
 
 ## 10. 関連ドキュメント
 
