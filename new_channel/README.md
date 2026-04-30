@@ -43,7 +43,7 @@
 | `simulations.md` | パターン別シミュレーション（悲観・中立・楽観 × Phase 別）|
 | `character_design.md` | **キャラ設定（暫定確定: 猫間しおり）**・ビジュアル発注方針 |
 | `candidates.md` | キャラ名候補プール（70+ 案、被りチェック済み）|
-| `competitor_analysis.md`（未作成）| 動画型解説 VTuber の競合分析 |
+| `competitor_analysis.md` | **競合分析（10 チャネル + 6 軸比較 + ポジショニングマップ + 戦略含意）完成** |
 
 ## 関連ドキュメント
 
