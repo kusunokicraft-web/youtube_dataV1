@@ -176,6 +176,7 @@
 | AGC エンジニアリング 千葉工場 製造 | researched（応募見送り推奨・順位 7）| agc_engineering_chiba_manufacturing.md |
 | 東京美装興業 木更津 設備管理 | researched（応募保留・順位 6・§11-5 戦略親和）| tokyobiso_kisarazu_facility.md |
 | カワサキグリーンテック 袖ヶ浦 発電プラント | researched（応募見送り・順位 8・3 交代夜勤）| kawasaki_greentech_sodegaura.md |
+| クボタ環境エンジニアリング 環境プラント運転管理 | researched（応募保留・**順位 3**・§11-5 戦略本流・要転勤夜勤確認）| kubota_kankyo_eng.md |
 
 ## 10. 関連ドキュメント
 
