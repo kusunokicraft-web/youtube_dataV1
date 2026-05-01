@@ -155,7 +155,7 @@
 | `business_plan.md` | 事業計画（11 セクション）| 258 |
 | `simulations.md` | パターン別シミュレーション 3 案 | 198 |
 | `character_design.md` | キャラ設定（15 セクション・確定版）| 665 |
-| `candidates.md` | キャラ名候補プール 70+ 案 | 211 |
+| `candidates/` | **キャラ名候補プール（フォルダ）**：README / CURRENT / POOL / PROMPTS / archive 5 ファイル構成 | — |
 | `competitor_analysis.md` | 競合分析（10 チャネル分析）| 611 |
 | `stock_videos.md` | 立ち上げ前ストック 11 本企画 | 280 |
 | `reports/2026-04-30_competitor_analysis_report.md` | 競合分析レポート（意思決定向け要約）| 209 |

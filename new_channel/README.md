@@ -64,7 +64,7 @@
 | `business_plan.md` | 事業計画（市場・差別化・収益モデル・KPI・撤退基準）|
 | `simulations.md` | パターン別シミュレーション（悲観・中立・楽観 × Phase 別）|
 | `character_design.md` | **キャラ設定（猫間しおり 確定）**・ビジュアル発注方針 |
-| `candidates.md` | キャラ名候補プール（70+ 案、被りチェック済み）|
+| `candidates/` | **キャラ名候補プール（フォルダ）**：README / CURRENT / POOL / PROMPTS / archive の 5 ファイル構成 |
 | `competitor_analysis.md` | **競合分析（10 チャネル + 6 軸比較 + ポジショニングマップ + 戦略含意）完成** |
 | `stock_videos.md` | **立ち上げ前ストック動画 11 本企画 + 公開順序 + 制作工数 + 季節性配置 完成** |
 
