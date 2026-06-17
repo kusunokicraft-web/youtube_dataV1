@@ -1,0 +1,21 @@
+video_id,position_sec,position_pct,retention_pct,source,note
+27WNi57l-L8,0,0.00,100.0,visual_estimate,
+27WNi57l-L8,5,0.16,90.0,visual_estimate,
+27WNi57l-L8,15,0.48,78.0,visual_estimate,
+27WNi57l-L8,30,0.97,72.0,studio_annotation,above typical for category
+27WNi57l-L8,60,1.93,58.0,visual_estimate,
+27WNi57l-L8,120,3.87,52.0,visual_estimate,
+27WNi57l-L8,180,5.80,47.0,visual_estimate,
+27WNi57l-L8,300,9.67,42.0,visual_estimate,
+27WNi57l-L8,480,15.48,40.0,visual_estimate,
+27WNi57l-L8,600,19.35,38.0,visual_estimate,
+27WNi57l-L8,900,29.02,33.0,visual_estimate,
+27WNi57l-L8,1200,38.70,30.0,visual_estimate,
+27WNi57l-L8,1500,48.37,28.0,visual_estimate,
+27WNi57l-L8,1551,50.02,28.0,visual_estimate,midpoint near 25:51
+27WNi57l-L8,1800,58.05,26.0,visual_estimate,
+27WNi57l-L8,2100,67.72,24.0,visual_estimate,
+27WNi57l-L8,2400,77.39,22.0,visual_estimate,
+27WNi57l-L8,2700,87.07,21.0,visual_estimate,
+27WNi57l-L8,3000,96.74,20.0,visual_estimate,
+27WNi57l-L8,3101,100.00,19.0,visual_estimate,end

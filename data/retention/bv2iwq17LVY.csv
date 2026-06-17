@@ -1,0 +1,22 @@
+video_id,position_sec,position_pct,retention_pct,source,note
+bv2iwq17LVY,0,0.00,100.0,visual_estimate,reading from screenshot
+bv2iwq17LVY,5,0.14,82.0,visual_estimate,first-second cliff
+bv2iwq17LVY,15,0.41,67.0,visual_estimate,
+bv2iwq17LVY,30,0.82,59.0,studio_annotation,below typical for category
+bv2iwq17LVY,60,1.65,52.0,visual_estimate,
+bv2iwq17LVY,120,3.30,47.0,visual_estimate,
+bv2iwq17LVY,180,4.94,45.0,visual_estimate,
+bv2iwq17LVY,300,8.24,43.0,visual_estimate,curve flattens
+bv2iwq17LVY,480,13.18,40.0,visual_estimate,
+bv2iwq17LVY,600,16.47,38.0,visual_estimate,
+bv2iwq17LVY,900,24.71,36.0,visual_estimate,
+bv2iwq17LVY,1200,32.94,33.0,visual_estimate,
+bv2iwq17LVY,1500,41.18,30.0,visual_estimate,
+bv2iwq17LVY,1800,49.41,28.0,visual_estimate,near 30:22 mark
+bv2iwq17LVY,1822,50.01,28.0,visual_estimate,midpoint
+bv2iwq17LVY,2100,57.65,27.0,visual_estimate,
+bv2iwq17LVY,2400,65.88,25.0,visual_estimate,
+bv2iwq17LVY,2700,74.11,24.0,visual_estimate,
+bv2iwq17LVY,3000,82.35,22.0,visual_estimate,
+bv2iwq17LVY,3300,90.59,19.0,visual_estimate,
+bv2iwq17LVY,3643,100.00,17.0,visual_estimate,end
